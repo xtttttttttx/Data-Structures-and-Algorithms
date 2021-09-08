@@ -5,25 +5,21 @@
 排序例子：
 
 ```bash
-> ./sort insertion 9 5 2 7
-before sorting: 9   5   2   7
- after sorting: 2   5   7   9
+> ./sort 9 5 2 7
+2 5 7 9
 ```
 
 输入`./sort`查看帮助：
 
 ```bash
 > ./sort
-     usage: sort algorithm [numbers...]
+     usage: sort numbers algorithm(quick sort is default)
 
-   example: sort insertion 9 5 2 7
+   example: sort 9 5 2 7 ins(insertion)
 
             *NOTE*: invalid numbers will be treated as ZEROS.
 
-algorithms: insertion, selection, bubble, exchange, merge, heap, quick,
-            shell, counting, radix, bucket
-
-            *NOTE*: quick sort will be the DEFAULT sorting algorithm
-            if algorithm is not one of the above. "sort 1 3 2 4"
-            will output "2 3 4" because "1" is not a sorting algorithm.
+algorithms: ins(insertion), (sel)selection, (bub)bubble, (exg)exchange,
+            (mrg)merge, (hep)heap, (qik)quick, (shl)shell
+            (cnt)counting, (rdx)radix, (bkt)bucket
 ```
