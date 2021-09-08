@@ -1,5 +1,3 @@
-all: sort
-
 sort: sort.o algorithms.o
 	gcc sort.o algorithms.o -o sort
 

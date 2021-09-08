@@ -4,45 +4,25 @@
 
 #include "algorithms.h"
 
-/**
- * @brief 打印数组
- * 
- * @param arr 数组
- * @param len 数组长度
- */
+// 打印数组
 void print_arr(int arr[], int len)
 {
     int i = 0;
     while (i < len)
-        printf("%-3d ", arr[i++]);
+        printf("%d ", arr[i++]);
     putchar('\n');
 }
 
-/**
- * @brief 用法提示
- */
+// 用法提示
 void usage()
 {
     printf(
-        "     usage: sort algorithm [numbers...]\n\n"
-        "   example: sort insertion 9 5 2 7\n\n"
+        "     usage: sort numbers algorithm(quick sort is default) \n\n"
+        "   example: sort 9 5 2 7 ins(insertion)\n\n"
         "            *NOTE*: invalid numbers will be treated as ZEROS.\n\n"
-        "algorithms: insertion, selection, bubble, exchange, merge, heap, quick,\n"
-        "            shell, counting, radix, bucket\n\n"
-        "            *NOTE*: quick sort will be the DEFAULT sorting algorithm\n"
-        "            if algorithm is not one of the above. \"sort 1 3 2 4\"\n"
-        "            will output \"2 3 4\" because \"1\" is not a sorting algorithm.\n");
-}
-
-/**
- * @brief 默认数组
- * 
- * @return int* 默认数组
- */
-int *default_array()
-{
-    static int arr[7] = {4, 2, 5, 7, 1, 3, 6};
-    return arr;
+        "algorithms: ins(insertion), (sel)selection, (bub)bubble, (exg)exchange,\n"
+        "            (mrg)merge, (hep)heap, (qik)quick, (shl)shell\n"
+        "            (cnt)counting, (rdx)radix, (bkt)bucket\n");
 }
 
 int main(int argc, char const *argv[])
@@ -53,31 +33,46 @@ int main(int argc, char const *argv[])
         return -1;
     }
 
-    int *arr, len;
-    if (argc == 2)  // 未输入数字，使用默认数组
+    int *arr, i, len;
+    // 从命令行读入剩余的参数作为数字，非法的输入将作为0处理
+    len = argc - 1;
+    arr = (int *)malloc(len * sizeof(int));
+    for (i = 0; i < len; i++)
+        arr[i] = atoi(argv[i + 1]);
+
+    // 排序，默认使用快速排序
+    int last = argc - 1;
+    // 如果最后一个参数是排序算法，实际长度需要减一
+    int real_len = len - 1;
+    if (!strcmp(argv[last], "ins"))
+        insertion_sort(arr, real_len);
+    else if (!strcmp(argv[last], "sel"))
+        selection_sort(arr, real_len);
+    else if (!strcmp(argv[last], "bub"))
+        bubble_sort(arr, real_len);
+    else if (!strcmp(argv[last], "exg"))
+        exchange_sort(arr, real_len);
+    else if (!strcmp(argv[last], "mrg"))
+        merge_sort(arr, real_len);
+    else if (!strcmp(argv[last], "hep"))
+        heap_sort(arr, real_len);
+    else if (!strcmp(argv[last], "qik"))
+        quick_sort(arr, real_len);
+    else if (!strcmp(argv[last], "shl"))
+        shell_sort(arr, real_len);
+    else if (!strcmp(argv[last], "cnt"))
+        counting_sort(arr, real_len);
+    else if (!strcmp(argv[last], "rdx"))
+        radix_sort(arr, real_len);
+    else if (!strcmp(argv[last], "bkt"))
+        bucket_sort(arr, real_len);
+    else  // 未提供排序算法，实际长度不需要减一
     {
-        len = 7;
-        arr = default_array();
-    }
-    else  // 从命令行输入数字
-    {
-        len = argc - 2;
-        arr = (int *)malloc(len * sizeof(int));
-        int i;
-        for (i = 0; i < len; i++)
-            arr[i] = atoi(argv[i + 2]);
+        real_len = len;
+        quick_sort(arr, real_len);
     }
 
-    printf("before sorting: ");
-    print_arr(arr, len);
-
-    // 排序，如果第一个参数argv[1]不是排序算法，则使用快速排序
-    // 对一个参数之后的输入进行排序
-    if (!strcmp(argv[1], "insertion"))
-        insertion_sort(arr, len);
-
-    printf(" after sorting: ");
-    print_arr(arr, len);
+    print_arr(arr, real_len);
 
     return 0;
 }
